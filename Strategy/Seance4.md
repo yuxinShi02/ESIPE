@@ -14,20 +14,21 @@
 On mesure **Attrait du segment** et **Atouts de l'entreprise**.
 
 ## BCG
-@https://fr.wikipedia.org/wiki/Matrice_BCG
+@https://fr.wikipedia.org/wiki/Matrice_BCG   
 Les activites sont representees sur un graphique a deux demensions
 - En abscisse: La part de marche relative
 - En ordonnee: Le taux de croissance du marche
 Ce modele utilise deux dim pour evaluer la position de l'entreprise sur chacune de ses activites:
 - La part de marche relative:
-  - Ventes de l'entreprise
-  - Ventes du concurrent principal
+  - (Ventes de l'entreprise)/Ventes du concurrent principal
   - 相对市场占有率是指根据短期的规模经济,根据长期的经验学习，作为是否能确保成本优势的判断材料。
 
 - Le taux de croissance du marche:
-  - Ventes annee1-Ventes annee 0
-  - Ventes annee 0
+  - (Ventes annee1-Ventes annee 0)/Ventes annee 0
   - 预计市场增长率是市场中制品的盛衰周期在什么时期的指标。指标在高的情况下市场是处于成长期，指标在低的情况下市场是处于成熟期。
+
+- Contribution de l'activite au CA total
+  - CA du secteur / CA total de l'entreprise
 Chaque activite est positionnee sur le graph et materialisee par un cercle dont la taille est proportionnelle a la ....
 <br/>
 <br/>
@@ -45,3 +46,11 @@ CA：
 - Maturite
 - Declinet
 大部分的业务的生命周期都是自“问号”区域开始，然后移向“星”区域。当市场增长放缓时候，则会移向“摇钱母牛”区域。最终则会移向“狗”区域，并完成一个生命周期。
+
+
+## Avantages et limites de la matrice BCG
+- S'appuie sur des donnees objectives
+- Simple a utiliser
+- Limites des concepts de base(effet d'experience/cycle de vie)
+- S'applique aux produits de grande consommation, standardises
+- Utilisee comme modele de  decision a mauvais escient(没有分寸)

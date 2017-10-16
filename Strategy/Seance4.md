@@ -22,10 +22,12 @@ Ce modele utilise deux dim pour evaluer la position de l'entreprise sur chacune 
 - La part de marche relative:
   - Ventes de l'entreprise
   - Ventes du concurrent principal
+  - 相对市场占有率是指根据短期的规模经济,根据长期的经验学习，作为是否能确保成本优势的判断材料。
 
 - Le taux de croissance du marche:
   - Ventes annee1-Ventes annee 0
   - Ventes annee 0
+  - 预计市场增长率是市场中制品的盛衰周期在什么时期的指标。指标在高的情况下市场是处于成长期，指标在低的情况下市场是处于成熟期。
 Chaque activite est positionnee sur le graph et materialisee par un cercle dont la taille est proportionnelle a la ....
 <br/>
 <br/>

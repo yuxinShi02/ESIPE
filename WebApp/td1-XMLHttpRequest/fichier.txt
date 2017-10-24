@@ -1,0 +1,1 @@
+Écrire un fichier xhrTXT.html qui récupère, en réponse à une requête Htpp, un fichier fichier.txt et affiche son contenu.

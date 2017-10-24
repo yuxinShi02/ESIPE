@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Lecture d'un format JSON et conversion en object js.</h2>
+
+<p id="xhrJSON"></p>
+
+<script>
+
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        myObj = JSON.parse(this.responseText);
+        document.getElementById("xhrJSON").innerHTML = myObj.nom;
+    }
+};
+xmlhttp.open("GET", "json.txt", true);
+xmlhttp.send();
+
+</script>
+
+</body>
+</html>

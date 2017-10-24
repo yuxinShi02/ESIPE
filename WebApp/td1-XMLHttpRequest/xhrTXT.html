@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="xhrTXT">
+<h2>R&eacute;cup&eacute;ration d'un fichier texte</h2>
+<button type="button" onclick="loadDoc()">Afficher le fichier</button>
+</div>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("xhrTXT").innerHTML =
+      this.responseText;
+    }
+  };
+  xhttp.open("GET", "fichier.txt", true);
+  xhttp.send();
+}
+</script>
+
+</body>
+</html>

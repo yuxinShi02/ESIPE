@@ -170,5 +170,7 @@ CREATE DATABASE TP2_BASE USER SYS IDENTIFIED BY toto
 ```
 ![](/home/tearsyu/Pictures/TP2_28.png)
 8. Lancer les scripts qui créent le dictionnaire.    
-????
-I don't understand.???
+```sql
+@/u01/app/oracle/product/11.2.0/xe/rdbms/admin/catalog.sql
+@/u01/app/oracle/product/11.2.0/xe/rdbms/admin/catproc.sql
+```

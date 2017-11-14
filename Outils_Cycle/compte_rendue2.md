@@ -18,7 +18,25 @@ Par exemple:
   Le résultat:
   ![](repAllSalle.PNG)
 2. Centraliser les informations, factoriser les dépendances de votre projet (utiliser le principe des propriétés).
-`jai pas compris`
+Avec création des modules maven, j'ai créer le projet comme ça:
+```xml
+<modules>
+  <module>com.springboot.controller</module>
+  <module>com.springboot.service</module>
+  <module>com.springboot.common</module>
+  <module>com.springboot.dao</module>
+  <module>com.springboot.test</module>
+</modules>
+```
+  - Le module controller c'est le coté client, il dépend de module common et le module service.
+  - Le module service est le serveur qui propose les services de consulter les reservations, il dépend de module common et dao.
+  - Le module common contient les éléments qui est utilisés pour tous les modules.
+  - Le module dao est aussi une partie de serveur, mais je le spécifie, il dépend du module common.
+  - Le module test sert à test unitaire
+
+Un exemple de compilation:
+![](maven_compile.png)
+
 3. Configurer maven afin de pouvoir utiliser ce référentiel central : http://repo.maven.apache.org/maven2/.
 Dans le fichier config de maven: `setting.xml`, on change les parametres:
 ```xml
@@ -63,19 +81,8 @@ public void testReservById(){
   assertEquals(stringByWeb, rsvByDao.toString());
 }
 ```
-Ceci testrunner:
-```java
-public class TestRunner {
-	 public static void main(String[] args) {
-	      Result result = JUnitCore.runClasses(TestSample.class);
-	      for (Failure failure : result.getFailures()) {
-	         System.out.println(failure.toString());
-	      }
-	      System.out.println(result.wasSuccessful());
-	   }
-}
-```
+
 6. Exécuter en mode commande les tests unitaires et vérifier que ça passe sans échec.
 Malheusement:
 ![](errorjUnit.PNG)
-J'ai bien ajouté jUnit.jar dans maven projet, et je n'ai pas pu résodre ce probleme.
+J'ai bien ajouté jUnit.jar dans maven projet, et le jar est bien dans le build path mais il existe tourjours ce probleme, je n'ai pas pu résodre ce probleme.

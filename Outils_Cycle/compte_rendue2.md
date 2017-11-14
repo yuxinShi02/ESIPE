@@ -4,9 +4,9 @@
 ## TP3
 1. Implémenter une deuxième fonctionnalité de votre choix pour l’utilisateur enseignant, en se basant sur le principe de multi-module vue dans le cours (vous êtes libre dans le choix de l’implémentation de cette fonctionnalité, vous pouvez utiliser ce que vous voulez comme librairie).
 Le projet est sur github:
-https://github.com/yuxinShi02/springbootExemple/tree/master/spring-boot-try
-Ceci la structure du projet:
-![](structure.PNG)
+<a href="https://github.com/yuxinShi02/springbootExemple/tree/master/spring-boot-try">Click github yuxin </a>
+Ceci la structure du projet:<br/>
+![](structure.PNG) <br/>
 J'ai implementé une nouvelle fonctionnalité : consulter les salles, ainsi sa disponibilité.
 Par exemple:
   - Si on veut savoir que la salle id 1 est disponible ou pas à 2017/10/24: 2017/10/24:
@@ -60,29 +60,95 @@ Dans le fichier config de maven: `setting.xml`, on change les parametres:
    </pluginRepositories>
 ```
 4. Installer Archiva sur votre machine (idéalement sur une VM accessible en réseau depuis votre machine), configurer maven pour utiliser ce référentiel distant.
-`je n'ai pas compris`
+Il y a deux moyens a utiliser Archiva, soit on l'utilise comme un repository privé principal, soit on l'utilise comme un repository dans les listes de repositories. Ici on ajoute rien dans Archiva donc on va utiliser deuxième méthode.
+Après l'installation d'Archiva et la création d'admin. On ajoute un profile dans setting.xml:
+```xml
+<profile>
+	<id>Archiva Repo</id>
+	<activation>
+		<activeByDefault>true</activeByDefault>
+	</activation>
+	<repositories>
+		<repository>
+			<id>archiva.internal</id>
+			<url>http://localhost:8022/repository/internal/</url>
+			<releases>
+			        <enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			 </snapshots>
+		<repository>
+	</repositories>
+</profile>
+
+```
+Ces messages sont disponible dans http://localhost:8022/#repositorylist.
+![](/home/tearsyu/Pictures/archiva.png)
+
 
 5. Implémenter des tests unitaires couvrant certaines méthodes proposées par l’API JUnit et Jmockit.
 Dans mon projet, j'ai ajouté un package: test, ainsi les deux classes qui permet d'effectuer les tests unitaires.
-Test de reservationById:
-```java
-/**
- * Compare the result of web and the result of database
- * if they are equal, test is true
- */
-@Test
-public void testReservById(){
-  System.out.println("test ReservByID");
-  RestClient restClient = new RestClient();
-  String stringByWeb = restClient.getByIdReserv(1);
+Test de la methode salleisDispo(), je fais un mock de ISalleService pour qu'il me donne un retour boolean, ceci le code:
 
-  ReservationDAO reservationDAO = new ReservationDAO();
-  Reservation rsvByDao = reservationDAO.getById(1);
-  assertEquals(stringByWeb, rsvByDao.toString());
+```java
+ public class TestSalle {
+
+	@Mocked
+	ISalleService mockiSalleService;
+
+	@Before
+	public void setUp() throws Exception {
+		// on peut factoriser l'initialisation de certaines variables ici !
+	}
+
+	/***
+	 * Init: Create an instance of Salle Controller and a id, a date string
+	 * Transation: invoke isDispo method with the valid initial parameters
+	 * Verification: mocked method must be successfully invoked
+	 ****/
+
+	@Test
+	public void testisDispo(){
+		//init
+		SalleController salleCtl = new SalleController();
+		int id = 1;
+		String date = "2017-08-22";
+		System.out.println("test controller isDispo");
+		new NonStrictExpectations(){
+			{
+				mockiSalleService.isDispo((Date) any, id);
+				result = true;
+			}
+		};
+
+		//Transition
+		ResponseEntity<String> isIsalleCtlInvoked = salleCtl.isDispo(id, date);
+		assertTrue("controller is dispo is invoked successfully", isIsalleCtlInvoked.getBody().equals("yes"));
+
+		new Verifications() {
+			{
+				mockiSalleService.isDispo((Date) any, id);
+				times = 1;
+			}
+		};
+	}
 }
 ```
 
 6. Exécuter en mode commande les tests unitaires et vérifier que ça passe sans échec.
-Malheusement:
-![](errorjUnit.PNG)
-J'ai bien ajouté jUnit.jar dans maven projet, et le jar est bien dans le build path mais il existe tourjours ce probleme, je n'ai pas pu résodre ce probleme.
+Malheusement, il y a une exception que je ne peut pas resoudre meme avec les solutions proposees sur Internet:
+
+>WARNING: JMockit was initialized on demand, which may cause certain tests to fail;
+please check the documentation for better ways to get it initialized.
+
+Si on veut upload les artificts du projet sur le repo privé, on peut configurer le fichier pom.xml du projet en ajoutant:
+```xml
+<distributionManagement>
+  <repository>
+    <id>archiva.internal</id>
+    <name>Archiva Repo</name>
+    <url>http://localhost:8022/repository/internal/</url>
+  </repository>
+</distributionManagement>
+```

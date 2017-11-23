@@ -28,6 +28,7 @@ Avec création des modules maven, j'ai créer le projet comme ça:
   <module>com.springboot.test</module>
 </modules>
 ```
+
   - Le module controller c'est le coté client, il dépend de module common et le module service.
   - Le module service est le serveur qui propose les services de consulter les reservations, il dépend de module common et dao.
   - Le module common contient les éléments qui est utilisés pour tous les modules.
@@ -35,7 +36,7 @@ Avec création des modules maven, j'ai créer le projet comme ça:
   - Le module test sert à test unitaire
 
 Un exemple de compilation:
-![](maven_compile.png)
+![](maven_compile.PNG)
 
 3. Configurer maven afin de pouvoir utiliser ce référentiel central : http://repo.maven.apache.org/maven2/.
 Dans le fichier config de maven: `setting.xml`, on change les parametres:

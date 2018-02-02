@@ -1,0 +1,27 @@
+name: affranchir les lettres
+author: Yuxin SHI
+date: 19-01-2018
+goal: effectuer une op2rqtion contenant des affranchissements de lettres. (Une phrase)
+precondition: les barèmes sont disponibles en lecture
+postcondition:  l'opération effectuée est écrite dans le journal d'activeté e la machine
+invariant: un seul usager peut utiliser la machine à la fois
+narrative description: pour une lettre données, la balance calcule le poids, l'usager choisir le type de lettre, des contrôles sont effectués, un prix est annoncé sur l'écran afin que l'usager effectue un paiment. Puis un timbre est imprimé, un justificatif de paiement est fourni et l'opération est écrite dans le journal d'activité de la machine.
+Ainsi, il est possible de connaître la rentabilité d'une machine par semaine, par mois, etc.
+Une lettre est décrite par un poids, un format, une adresse. A partir du code postal, il est possible de déterminer la région ou le département ou le territoire de destination. Ce la peut amener le calcul d'un surtaxe pour OM1(outre mer) et OM2.
+
+visible actions:
+   + va1: ouverture d'une demande d'affranchissement
+   + va2: affichage du poids de la lettre
+   + va3: saisie du code postal
+   + va4: affichage du prix
+   + va5: sélection du mode de paiement
+   + va6: demande d'impression d'un justificatif
+   + va7: impression du timbre
+
+senario:
+   + sc1: un usager effectue avec succès l'affranchissement d'une lettre de 112g pour la Guadeloupe
+   + sc2: un usager effectue avec succès un affranchissement d'une lettre de 50g pour Monaco
+
+business rules:
+  + br1: une lettre doit respecter les contraintes de format(minimal, maximal, épaisseur)
+  + br2: une lettre ne doit pas dépasser 3kg

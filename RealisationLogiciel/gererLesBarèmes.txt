@@ -1,8 +1,10 @@
 name: gérer les barèmes postaux
 author: Yuxin SHI
 date: 19-01-2018
+      02-02-2018
 goal: pouvoir lire, modifier, ajouter un barème de la poste
 precondition: aucun usager est en cours d'utilisation de la machine
+              (correction spec)la machine dispose d'un acces reseau pour lire les nouveaux baremes
 postcondition: l'ensemble des barèmes sont accessibles sur la machine
 invariant: un seul usager peut accéder en lecture ou écriture aux barèmes
 narative description: il existe plusieurs barèmes d'affranchissement: Lettre Verte, Lettre Prioritaire EcoPli, Ceccogramm, etc. Chaque barème est décrit par:

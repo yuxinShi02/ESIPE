@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## La differenciation
 L'entreprise propose une offre dont la valeur percue est differente de celle des offres des concurrents du secteur.
 Ex: techno, conception, originale, image de marque, apparence exterieure, reseau de distributeurs....
@@ -40,7 +39,7 @@ Proposition: essayer de ne pas tester <\<stuck in the middle>> en voulant tou fa
 - Être plus innovant
 - Être sur-mesure
 ## Les trois stratégies génériques
-Trois Positionnements stratégiques pour supasser les concurrents du secteur:   
+Trois Positionnements stratégiques pour supasser les concurrents du secteur:
 |      | Coût    | Coût | Différenciation |
 | ---  |------   | ---- |----------------|
 |Cible | Large   |Domination par les coûts| Différenciation|
@@ -48,7 +47,7 @@ Trois Positionnements stratégiques pour supasser les concurrents du secteur:
 Etre moins cher est correspondant à Domination, innovant-> différenciation, sur-mesure -> Concentration
 
 ### La domination par les coûts
-L'entreprise propose une offre dont la valeur perçue est comparable à celles des offres concurrentes, mais à un prix inférieur.  
+L'entreprise propose une offre dont la valeur perçue est comparable à celles des offres concurrentes, mais à un prix inférieur.
 Objectifs:
 - Standardiser le produit et réaliser des économies d'échelle. La taille permet d'augmenter le pouvoir de négociation vis à vis des clients et des fournisseurs
 - Défendre l'entreprise contre les produits de substitution et les nouveaux entrants. Réduction des coûts: délocalisation, suppression d'éléments de l'offre.
@@ -78,4 +77,3 @@ Large Domination par les coût => Acer, Lenovo etc
 ```
 5. Quels sont les risques liés à cette stratégie?
 Le prix baisse trop vite, pas de marge.
->>>>>>> dd5ba29ef67e643e161b0b5eca74c4643bd8be7c

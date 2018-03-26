@@ -2,7 +2,7 @@
 `[TD2 exercices3]`
 # Compte Rendue EXO3
 ## Create tables
-```SQL
+```sql
 CREATE TABLE emp(
   num           int,
   nom           varchar(50),
@@ -74,7 +74,7 @@ GRANT ALL privileges ON tp2ex3 TO 'alice'@'localhost' WITH GRANT OPTION;
 GRANT ALL privileges ON tp2ex3.* TO 'alice'@'localhost' WITH GRANT OPTION;
 ```
 1. Un employé peut accéder à ses données personnelles enregistrées dans la relation Employé.
-```SQL
+```sql
 /*Login with Alice*/
 CREATE VIEW co_emp AS
 (SELECT * FROM emp WHERE emp.nom LIKE substring_index(user(), '@', 1));
@@ -98,7 +98,7 @@ GRANT SELECT, UPDATE(tel, email) ON co_emp TO 'odile'@'localhost';
 
 3. Un directeur peut modifier les salaires de tous les employés de son département sauf le sien.
 
-  ```SQL
+  ```sql
 CREATE VIEW dpt_directeur AS
 (SELECT * FROM emp INNER JOIN EmpDpt ON emp.num = EmpDpt.numEmp WHERE EmpDpt.dptId IN (SELECT dptId FROM EmpDpt INNER JOIN emp ON
   emp.num = EmpDpt.numEmp WHERE num = (SELECT num FROM emp WHERE emp.nom LIKE substring_index(user(), '@', 1))) AND emp.num != (SELECT num FROM emp WHERE emp.nom LIKE substring_index(user(), '@', 1)));
@@ -128,13 +128,13 @@ Logging as Alain:
 ![](tp2ex3_4.png)
 
 5. Un responsable de projet peut créer un nouveau projet.
-```SQL
-CREATE VIEW create_project AS
-(SELECT projetId,responsable,nomProjet,Status FROM projet WHERE responsable IN (
+  ```sql
+  CREATE VIEW create_project AS
+  (SELECT projetId,responsable,nomProjet,Status FROM projet WHERE responsable IN (
   SELECT num FROM emp WHERE emp.nom LIKE substring_index(user(), '@', 1)));
-GRANT SELECT, INSERT ON create_project TO 'alain'@'localhost';
-GRANT ....
-```
+  GRANT SELECT, INSERT ON create_project TO 'alain'@'localhost';
+  GRANT ....
+  ```
 Logging as Alain:
 ![](tp2ex3_5.png)
 
@@ -182,9 +182,9 @@ Logging as Alain:
   GRANT SELECT ON moyenne_sal TO 'pierre'@'localhost';
   ....
   ```
-  A droite est Pierre, il appartient a la fois RH et compta.   
-  Son salaire moyenne dans RH = (salaire d'Alice + salaire de Pierre)/2 = 20500.  
-  Et son salaire moyenne dans compta = (salaire de Pierre + salaire d'Isabelle)/2 = 22000.   
+  A droite est Pierre, il appartient a la fois RH et compta.
+  Son salaire moyenne dans RH = (salaire d'Alice + salaire de Pierre)/2 = 20500.
+  Et son salaire moyenne dans compta = (salaire de Pierre + salaire d'Isabelle)/2 = 22000.
   A gauche est Alice, elle appartien a RH, salaire moyenne = (salaire d'Alice + salaire de Pierre)/2 = 20500.
   ![](tp2ex3_8.png)
 

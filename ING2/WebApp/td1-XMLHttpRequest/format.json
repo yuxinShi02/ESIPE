@@ -1,0 +1,8 @@
+[
+ {"nom":"Durand","Age":18,
+ 	"Adresse":{"Rue":"10 Paul Morand","Ville":"Paris"}},
+ {"nom":"Dupont","Age":30,
+ 	"Adresse":{"Rue":"23 Pierre de Serbie","Ville":"Dijon"}},
+ {"nom":"Dudu","Age":27,
+ 	"Adresse":{"Rue":"18 juin","Ville":"Créteil"}}
+]

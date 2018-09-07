@@ -1,0 +1,686 @@
+1/
+TP mongoDBmongoimport --db filmographie --collection usagers --file C:\Users\Admin\Desktop\Ecole_Ingé_cours\MONGODB\fichiers_TP_new\usagers.json   (6040 documents)
+L'objectif de ce TP est de ce familialiser avec les différentes opérations qu'il est possible d'effectuer sur une base mongoDB.
+
+Question 1.  Import des données
+Importer le fichier films.json dans la base filmographie et dans la collection films  (Adapter le chemin par rapport à votre machine )
+> mongoimport --db filmographie --collection films --file C:\Users\Admin\Desktop\Ecole_Ingé_cours\MONGODB\fichiers_TP_new\films.json  (3883)
+
+Importer le fichier usagers.json dans la base filmographie et dans la collection usagers (Adapter le chemin par rapport à votre machine )
+>mongoimport --db filmographie --collection usagers --file C:\Users\Admin\Desktop\Ecole_Ingé_cours\MONGODB\fichiers_TP_new\usagers.json   (6040 documents)
+
+--------------------------
+
+
+
+
+
+
+Dans la suite du TP, seuls les données usagers et films vont être utilisées.
+
+Question 2.  Lancer le shell mongoDB et se connecter à la base filmographie
+- Afficher les différentes collections de la base
+> use filmographie
+
+-  Afficher les collections de la base
+> show collections
+OU
+> db.getCollectionNames()
+
+- Afficher le nombre de document dans les collections films et usagers
+> db.films.find().count()
+> db.usagers.find().count()
+
+-  Afficher un document de chaque collection films pour voir la structure
+> db.films.findOne()
+> db.usagers.findOne()
+
+
+
+La collection films contient les informations sur les film et la collection usagers
+
+
+Remarque:
+Dans la partie UPDATE, proposer de renommer le champs title en titre et
+
+La collection films contient les informations sur les films
+ contient des informations sur les films, c’est-à-dire leur id, titre et genre. > db.movies.findOne() { "_id" : 1, "title" : "Toy Story (1995)", "genres" : "Animation|Children's|Comedy" }
+
+
+ La collection usagers contient des informations sur les utilisateurs et les notes qu'ils ont attribué aux films
+Les informations sur les usagers sont les suivantes : _id, nom, âge, occupation et sexe.
+Les notes données par chaque utilisateur sont représentées dans un tableau de document.
+Chaque document contenant l’_id d’un film (faisant référence aux _id de la collection films), la note attribuée et la date à laquelle l’utilisateur a laissé la note.
+
+> db.usagers.findOne({},{movies : {$slice : 2}}); { "_id" : 6038, "name" : "Yaeko Hassan", "gender" : "F", "age" : 95, "occupation" : "academic/educator", "movies" : [ { "movieid" : 1419, "rating" : 4, "timestamp" : 956714815 }, { "movieid" : 920, "rating" : 3, "timestamp" : 956706827 } ] }
+
+Question  3. Quelle est l’occupation de Clifford Johnathan ? Ecrivez une requêtes dont la réponse affiche uniquement son nom et son occupation.
+
+> db.usagers.find({name: "Clifford Johnathan" })
+> db.usagers.find({name: "Clifford Johnathan"},{name:1, occupation:1})
+
+
+
+QUESTION  4.  COMBIEN D'USAGERS ONT ENTRE 18 ET 30 ANS (INCLUS) ?
+
+> db.usagers.find({$and:[{age:{$lte:30}},{age:{$gte:18}}]}).count()  --> 2365  (Attention lorsque la condition est sur un même champ, utiliser le $and)
+
+
+ Question 5. Combien d'usagers sont artistes (artist) ou scientifiques (scientist)
+ db.usagers.find({$or:[{occupation:"artist"},{occupation:"scientist"}]}).count() --> 411
+
+ OU
+
+ db.usagers.find({occupation:{$in:["artist","scientist"]}}).count() --> 411
+
+
+Question 6 Quelles sont les dix femmes auteurs (writer) les plus âgées ?  (Tri par ordre croissant d'age, puis on limite le nombre avec à 10)
+
+ db.usagers.find({$and:[{occupation:"writer"},{gender:"F"}]},{age:1}).sort({age:-1}).limit(10)
+
+
+Question 7. Quelles sont toutes les occupations présentes dans la base de données ?
+
+db.usagers.distinct("occupation")
+
+
+
+
+Partie  INSERT
+Question 8. Insérer un nouvel utilisateur dans la base de données (vous, par exemple). Ne pas inclure pour l’instant le champ movies.
+
+ db.usagers.insert({"name" : "Daniel BADIATA", "gender" : "M", "age" : 40, "occupation" : "consultant"})
+
+ Vérifier que vos informations ont été bien insérées
+
+Question 9. Choisir un film de la collection movies et mettre à jour l’entrée insérée précédemment en ajoutant le champ movies respectant le schéma adopté par les autres entrées.
+Pour le champ timestamp, utiliser l’heure courante : Math.round(new Date().getTime() / 1000)
+
+ db.usagers.update({"name" : "Daniel BADIATA"}, {$set:{"movies" : [ { "movieid" : 25, "rating" : 4, "timestamp" : Math.round(new Date().getTime() / 1000)}]}})
+
+ Vérifier que vos informations ont été bien modifiées avec l'ajout du film
+
+db.usagers.find({"name" : "Daniel BADIATA"})
+
+- Modifier votre "occupation" en lui donnant une autre valeur
+ db.usagers.update({"name" : "Daniel BADIATA"}, {$set:{"occupation" :"etudiant"}})
+- Supprimer le champs movies
+db.usagers.update({"name" : "Daniel BADIATA"}, {$unset:{movies:""}})
+
+
+DELETE
+Question 10. Supprimer l’entrée de la base de données.
+
+db.usagers.remove({"name" : "Daniel BADIATA"})
+
+UPDATE
+Question 11. Pour tous les utilisateurs qui ont pour occupation "programmer", changer cette occupation en "developer".
+
+db.usagers.update({occupation:"programmer"},{$set:{occupation:"developper"} },{multi:true})
+
+db.usagers.find({occupation:"programmer"})
+
+
+EXPRESSIONS REGULIERES
+Pour comprendre un peu:
+
+^ : début du fragment de texte,
+.* : n’importe quelle chaine de texte (peut contenir 0 caractère),
+(\d{4}) : quatre chiffres, à garder en mémoire,
+$ : fin du fragment de texte.
+[0-9] : les chiffres de 0 à 9
+
+
+Cf.   http://docs.mongodb.org/manual/reference/operator/query/regex/
+ Question 12. Combien de films sont sortis dans les années quatre-vingt ? (l’année de sortie est indiquée entre parenthèses à la fin du titre de chaque film)
+ Réponse : 598
+ Les années 80 vont de 80 à 89. Il s'agit donc des années de la forme "198*"
+En utilisant regex
+
+  db.films.find({title:{$regex:/\(198[0-9]\)/}}).count()
+ OU
+
+ db.films.find({title:{$regex:"^.*198[0-9]"}}).count()
+Plus simplement
+ db.films.find({title:/\(198[0-9]\)/}).count()
+
+
+Question 13. Combien de films sont sortis entre 1984 et 1992 ?
+
+
+Réponse : 668
+
+Etape 1:
+db.films.find({title:{$regex:"^.*198[4-9]"}})  // Années De 1984 à 1989
+db.films.find({title:{$regex:"^.*199[0-2]"}})  // Années De 1990 à 1992
+
+Par la suite, on combine avec un $or
+db.films.find({$or: [{title:{$regex:"^.*198[4-9]"}}, {title:{$regex:"^.*199[0-2]"}}]})
+Puis un count, pour compter
+
+db.films.find({$or: [{title:{$regex:"^.*198[4-9]"}}, {title:{$regex:"^.*199[0-2]"}}]}).count()
+
+
+ Question 14. Combien y a-t-il de films d’horreur ("Horror")?
+Réponse : 343
+ Un film peut être de plusieurs genres. Il faut donc que dans la liste des genres "Horror" soit présent.
+ Pour ce faire, on utilise les expressions regulières. Il faut que le film contienne "Horror"
+ db.films.find({genres:/Horror/}).count()
+
+ Si l'on fait db.films.find({genres:"Horror"}).count()  qui donne 178. Ici l'on cherche les films qui ne sont que "Horror" pas autre chose.
+
+
+ Question 15. Combien de films ont pour type à la fois "Musical" et "Romance"?:  18
+ Il s'agit des films qui sont à la fois Musical et Romance. Ils peuvent avoir d'autres genres en plus.
+db.films.find({$and:[{"genres":{$regex:"Musical"}}, {"genres":{$regex:"Romance"}}]}).count()
+
+
+
+UTILISATION DE FOREACH
+ Question 16. Comme vous avez pu le constater, stocker l’année de sortie du film dans son titre n’est pas très pratique.
+ Modifier la collection films en ajoutant à chaque film un champ year contenant l’année et en supprimant cette information du titre.
+ De nombreuses méthodes peuvent répondre à ce besoin.
+Il faut privilégier au maximum les approches exploitant les fonctionnalités de MongoDB.
+Il est par exemple déconseillé, pour des raisons évidentes de performances, de demander l’intégralité des films à la base de données, de les stocker dans une liste javascript, puis d’itérer sur cette liste pour calculer les nouvelles valeurs de champs et mettre à jour les éléments, toujours en javascript).
+http://docs.mongodb.org/manual/reference/method/cursor.forEach/
+http://docs.mongodb.org/manual/reference/method/cursor.snapshot/
+
+
+db.films.update({},{$unset:{ newGenres:0}},{multi:true})
+
+
+Etape 1 : Extraire la chaine l'année du titre
+year = doc.title.substring(doc.title.length-5, doc.title.length - 1)
+
+Etape 2: Supprimer l'année dans le titre : "title":
+doc.title.substring(0, doc.title.length - 7)
+
+D'où la requête:
+
+
+db.films.find().forEach(
+  function(doc) {
+
+   db.films.update({_id: doc._id}, {$set: {
+
+   "year": parseInt(doc.title.substring(doc.title.length-5, doc.title.length - 1)),
+   "title":doc.title.substring(0, doc.title.length - 7)
+   } })
+  }
+);
+
+
+ Question 17. Modifier la collection films en remplaçant pour chaque film la valeur du champ genres par un tableau de chaines de caractères.
+
+Utilisation de la fonction split de javascript.
+La fonction split permet de diviser une chaîne de caractères à partir d'un séparateur pour fournir un tableau de sous-chaînes.
+Ici le séparateur, c'est "|"
+D'où la requête :
+
+
+db.user.find().forEach(
+  function(doc) {
+
+    db.films.update({_id: doc._id}, {$set: {genres: doc.genres.split('|') } })
+  }
+);
+
+OU
+
+db.user.find().forEach(
+  function(doc) {
+    genres = doc.genres.split('|')
+    db.films.save(doc);
+  }
+);
+
+
+
+
+ Question 18. Modifier la collection usagers en remplaçant pour chaque utilisateur le champ timestamp par un nouveau champ date, de type Date.
+
+ Le champ timestamp est exprimé en secondes. Le point de départ est le 01/01/1970.
+En javascript, les instances de Date sont crées en utilisant le nombre de millisecondes depuis le 01/01/19790.
+
+A ce jour, dans mongoDB, on ne peut pas modifier un champ d'un tableau de documents par une seule requête.
+cf.
+https://jira.mongodb.org/browse/SERVER-1243
+
+
+
+Il faut par conséquent, parcourir les différents documents du tableau movies dans une fonction javascript
+
+
+POUR ajouter un élément dans un  tableau de documents. Ici c'est l'ajout d'une date basée sur le timestamp
+
+db.usagers.find().snapshot().forEach(function(doc)
+{
+    var tabFilm = doc.movies;
+    tabFilm.forEach(function(unFilm)
+    {
+
+        unFilm['new_Date'] = new Date(unFilm['timestamp']*1000);
+    })
+    db.usagers.update({_id: doc._id}, doc);
+});
+
+
+
+
+(à ne pas faire : Ce qu'aurait pu être la requête avec le tableau.$.champ  de mongodb)
+db.usagers.find().snapshot().forEach(function(doc) {
+db.usagers.update(
+   { "_id":doc._id},
+   { $set: { "movies.$.new_Date" : doc.movies.timestamp } }, {multi:true}
+)
+}
+)
+
+
+----
+Pour supprimer un  élément dans un tableau de documents (ceci est un EXEMPLE pour le delete à ne pas faire)
+
+db.usagers.find().snapshot().forEach(function(doc)
+{
+    var tabFilm = doc.movies;
+    tabFilm.forEach(function(unFilm)
+    {
+       delete unFilm['timestamp'];
+    })
+    db.usagers.update({_id: doc._id}, doc);
+});
+
+
+
+--------------------
+
+
+
+
+
+
+UTILISATION DES TABLEAUX DANS MongoDB
+
+ Lecture
+Question 19. Combien d’utilisateurs ont noté le film qui a pour id 1196 (Star Wars: Episode V - The Empire Strikes Back (1980)) ?
+
+**ERROR movies.movieid:**
+db.usagers.find({"movies.movieid"=1196}, {name:1}).count() --> 2990
+
+Question 20. Combien d’utilisateurs ont noté tous les films de la première trilogie Star Wars (id 260, 1196, 1210) ?  http://docs.mongodb.org/manual/reference/operator/query/all/
+
+
+db.usagers.find({"movies.movieid":{$all:[260,1196,1210]}}, {name:1}).count() ---> 1926
+
+Question 21. Combien d’utilisateurs ont notés exactement 48 films ?  http://docs.mongodb.org/manual/reference/operator/query/size/
+Notez que $size ne peut être apparié qu’à des nombres exacts. La sélection des utilisateurs qui ont vu plus d’un certain nombre de films doit être effectuée en deux étapes ; c’est le sujet des questions suivantes.
+
+db.usagers.find({"movies":{$size:48}}, {name:1}).count() ---> 51
+
+Question 22. Pour chaque utilisateur, créer un champ num_ratings qui indique le nombre de films qu’il a notés.
+
+db.usagers.find().snapshot().forEach(function(doc) {
+    db.usagers.update(
+        { "_id": doc._id },
+        { "$set": { "num_ratings":doc.movies.length } }
+    );
+})
+
+
+Question 23. Combien d’utilisateurs ont noté plus de 90 films ?
+--->3114
+
+db.usagers.find({num_ratings:{$gt:90}}).count()
+
+En une seule requête avec l'opérateur $where:
+
+db.usagers.find({"movies" : {$exists: true}, $where : "this.movies.length > 90"});
+
+
+
+Question 24. Combien de notes ont été soumises après le 1er janvier 2001 ?
+Réponse: 95452 notes
+
+En utilisant le nouveau champ new_Date
+db.usagers.aggregate([
+{$unwind:
+	"$movies"
+},
+ { $match:
+	{"movies.timestamp":{$gt:Math.round(new Date("2001-01-01").getTime()/1000) }}
+},
+ {$group:
+    {
+	 _id:"",
+      nombre_notes: {$sum:1}
+    }
+  }
+])
+
+
+Détails des opérations :
+La fonction a utilisé est la fonction d'agrégation qui est de la forme.
+
+db.collection([
+{$unwind},
+{$group},
+{$match}
+]
+)
+$match correspond à la clause where du sql.
+$group correspond à la clause group by
+$unwind est un opérateur particulier utilisé pour transformer chaque entrée d'un tableau en un document (à utiliser lorsque la fonction d'agrégation doit s'appliquer sur un champ contenu dans un tableau)
+
+
+Le nombre de notes correspond aux différents champs "rate" contenu dans le tableau movies.
+La première étape est d'éclater le nombre de notes par utilisateur en créant un document par chaque élément du tableau movies(cf. l'opérateur $unwind pour sép https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/)
+
+
+Pour comprendre ce que fait l'opérateur $unwind, analyser l'usager _id:6040
+
+
+Puis en comptant le nombre de lignes avec l'opérateur $group de cet usager, on 346 films notés par ce dernier.
+db.usagers.aggregate([
+{
+$unwind: "$movies"
+},
+  {$group:
+    {
+	_id:"$_id",
+      nombre_notes: {$sum:1}
+    }
+  },
+  { $match:{_id:6040 }}
+])
+
+Si l'on compte le nombre de films pour tous les utilisateurs en enlevant $match
+db.usagers.aggregate([
+
+{
+$unwind: "$movies"
+},
+  {$group:
+    {
+	 _id:"$_id",
+      nombre_notes: {$sum:1}
+    }
+  },
+
+])
+
+Si l'on ajoute la condition sur la date en se basant sur timestamp :
+
+db.usagers.find({"movies.timestamp":{$gt:Math.round(new Date("2001-01-01").getTime() / 1000) }}).count()
+
+On obtient la requête :
+db.usagers.aggregate([
+    { $match:{"movies.timestamp":{$gt:Math.round(new Date("2001-01-01").getTime() / 1000) }}
+
+  }
+])
+
+
+On combine les requêtes en retirant l'_id : c'est à dire en le mettant à "" pour avoir le total des notes
+
+
+
+db.usagers.aggregate([
+{$unwind:
+	"$movies"
+},
+
+ { $match:
+	{"movies.timestamp":{$gt:Math.round(new Date("2001-01-01").getTime() / 1000) }}
+},
+ {$group:
+    {
+	 _id:"",
+      nombre_notes: {$sum:1}
+    }
+  }
+])
+
+
+
+
+
+
+
+Question 25. Quels sont les trois derniers films notés par Jayson Brad ?
+
+Dans un premier on sélection l'usager "jayson Brad" avec l'opérateur $match
+Par la suite, on sélection les champs que l'on veut garder avec  l'opérateur $project
+On éclaté le tableau movies pour que chaque film soit sur une ligne. On aura donc une ligne par {movieid, rate, new_Date}
+Puis on fait un tri décroissant par timestamp--> $sort
+On fait une nouvelle projection pour ne garder que name et movies.new_Date
+On conserve les 3 premières lignes avec $limit:3
+
+
+D'où la requête :
+db.usagers.aggregate([{
+	$match: { "name": "Jayson Brad"}},
+	{$project: {"name" : 1 ,  "movies": 1}},
+    {$unwind: "$movies"},
+    { $sort: { "movies.new_Date": -1 }},
+	{
+    $project: {"name" : 1 ,  "movies.new_Date": 1}
+    },
+	{
+	$limit : 3
+	}])
+
+
+
+
+Question 26. Obtenez les informations portant uniquement sur Tracy Edward et sa note du film Star Wars: Episode VI - Return of the Jedi, qui a pour id 1210.
+
+Dans un premier on sélection l'usager "Tracy Edward" avec l'opérateur $match
+Par la suite, on sélection les champs que l'on veut garder avec  l'opérateur $project. Ici name et le tableau movies
+On éclate le tableau movies pour que chaque film soit sur une ligne. On aura donc une ligne par {movieid, rating, timestamp}
+on fait une nouvelle sélection avec movies.movieid=1210 ---> $match
+
+
+db.usagers.aggregate([
+{ "$match": { "name": "Tracy Edward"}},
+        {
+            $project: {
+                "name" : 1 ,  "movies": 1, _id:0
+            }
+        }
+		,
+        {
+            $unwind: "$movies"
+        } ,
+ {
+	"$match": {"movies.movieid": 1210}
+}]);
+
+		,
+
+
+Question 27. Combien d’utilisateurs ont donné au film "Untouchables, The" la note de 5.
+On éclate le tableau movies ---> $unwind
+On  sélectionne tous les documents usagers ayant un rating = 5 ----> $match
+On associe aux usagers les informations de la collection films avec comme champ d'associaton movieid---> opérateur $lookup
+On filtre par la suite sur le titre du film --> $match
+On garde uniquement les champs _id, name et title --> $project
+On compte les usagers ---> $group
+
+db.usagers.aggregate([
+{
+      $unwind: "$movies"
+   },
+
+   { $match:
+	{"movies.rating":5}
+},
+{
+$lookup:
+	{
+		from:"films",
+		localField: "movies.movieid",
+		foreignField:"_id",
+		as:"mesfilms"
+	}
+},
+ { $match:
+	{"mesfilms.title":"Untouchables, The"}
+},
+
+{
+            $project: {
+                "name" : 1 ,  "mesfilms.title": 1
+            }
+        },
+{$group:
+    {
+	 _id:"",
+      nombre_usagers: {$sum:1}
+    }
+  }
+]
+);
+
+
+
+
+
+ Ecriture des champs d'un tableau
+
+Question 28. L’utilisateur Barry Erin vient juste de voir le film Nixon, qui a pour id 14 ; il lui attribue la note de 4.
+ Mettre à jour la base de données pour prendre en compte cette note. N’oubliez pas que le champ num_rattings doit représenter le nombre de films notés par un utilisateur.
+
+ Vérifirication du nombre de film avant insertion du nouveau film --> num_rating = 346
+ db.usagers.find({"name":"Barry Erin"},{movies:0}).pretty()
+ Ajout du nouveau film qui est un document dans le tableau movies avec l'opérateur $push
+En même temps, on incrémente de 1 la valeur du compteur num_ratings.
+timestamp prend la date du jour (nex Date())
+
+ db.usagers.update({"name":"Barry Erin"},
+
+{ $push:{
+ "movies":[{"movieid":14,rating:14, timestamp:new Date()}]},
+ $inc:{num_ratings:1}
+ }
+ )
+
+
+
+Question 29. L’utilisatrice Marquis Billie n’a en fait pas vu le film "Santa with Muscles", qui a pour id 1311. Supprimer la note entrée par mégarde dans la base de données.
+Pour supprimer un élément d'un tableau, on utilise l'opérateur $pull
+Ce qui donne :
+Je vérifie d'abord les informations sur l'utilisatrice : db.usagers.find({name:"Marquis Billie"},{movies:{$slice:2}}).
+Je mets à jour à la fois la liste des films notée et le compteur.
+
+db.usagers.update({name:"Marquis Billie"},
+
+{ $pull:{
+ "movies":{"movieid":1311}},
+ $inc:{num_ratings:-1}
+ }
+);
+
+
+Question 30. Les genres du film "Cinderella" devraient être Animation, Children's et Musical. Modifier en une seule requête le document correspondant pour qu’il contienne ces trois genres sans doublon.
+
+Vérification du contenu du tableau genres pour ce film :
+ db.films.find({title:"Cinderella"})
+
+ Ajout du genre animation en début du tableau avec $push (par défaut, l'ajout se fait en fin  de tableau. Pour ajouter en début de tableau, $position:0)
+
+db.films.update({title:"Cinderella"},
+{
+$push:
+	{
+	"genres":"Animation"
+	}
+}
+)
+
+Replica Set
+Cluster: une collection de serveur
+
+3 ports: 27019, 26019 26020
+
+mongod --replSet rs1 --port 27019 --dbpath data/db/ &
+mongod --replSet rs1 --port 26019 --dbpath data/db2 &
+mongod --replSet rs1 --port 26020 --dbpath data/db3 &
+
+mongo --port 27019
+rs.status()
+rs.conf()
+rs.initiate()==>create du noeud primary
+rs.add("localhost:26019", {arbiterOnly:true})
+rs.add("localhost:26020")
+rs1:PRIMARY> rs.conf()
+{
+	"_id" : "rs1",
+	"version" : 3,
+	"protocolVersion" : NumberLong(1),
+	"members" : [
+		{
+			"_id" : 0,
+			"host" : "localhost:27019",
+			"arbiterOnly" : false,
+			"buildIndexes" : true,
+			"hidden" : false,
+			"priority" : 1,
+			"tags" : {
+
+			},
+			"slaveDelay" : NumberLong(0),
+			"votes" : 1
+		},
+		{
+			"_id" : 1,
+			"host" : "localhost:26019",
+			"arbiterOnly" : false,
+			"buildIndexes" : true,
+			"hidden" : false,
+			"priority" : 1,
+			"tags" : {
+
+			},
+			"slaveDelay" : NumberLong(0),
+			"votes" : 1
+		},
+		{
+			"_id" : 2,
+			"host" : "localhost:26020",
+			"arbiterOnly" : false,
+			"buildIndexes" : true,
+			"hidden" : false,
+			"priority" : 1,
+			"tags" : {
+
+			},
+			"slaveDelay" : NumberLong(0),
+			"votes" : 1
+		}
+	],
+	"settings" : {
+		"chainingAllowed" : true,
+		"heartbeatIntervalMillis" : 2000,
+		"heartbeatTimeoutSecs" : 10,
+		"electionTimeoutMillis" : 10000,
+		"catchUpTimeoutMillis" : -1,
+		"catchUpTakeoverDelayMillis" : 30000,
+		"getLastErrorModes" : {
+
+		},
+		"getLastErrorDefaults" : {
+			"w" : 1,
+			"wtimeout" : 0
+		},
+		"replicaSetId" : ObjectId("5ac4e93c5c8280a7054158e8")
+	}
+}
+En secondaire, pour lire:
+rs1:SECONDARY> rs.slaveOk()
+mongoimport --port 27019 --db filmographie --collection films --file path_file
+
+Create users:
+>use admin
+>db.createUser("toto", "toto", role:["root", db:"admin"])
+>db.auth("toto", "toto")
+>create others users

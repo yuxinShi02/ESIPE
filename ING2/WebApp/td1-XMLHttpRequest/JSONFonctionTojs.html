@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Conversion d'une fonction JSON en une date js.</h2>
+<p id="JSONFonctionTojs"></p>
+<script>
+
+var myJSON = '{ "nom":"Durand", "age":"function () {return 30;}", "ville":"New York"}';
+var myObj = JSON.parse(myJSON);
+myObj.age = eval("(" + myObj.age + ")");
+document.getElementById("JSONFonctionTojs").innerHTML = myObj.age(); 
+</script>
+
+</body>
+</html>
+

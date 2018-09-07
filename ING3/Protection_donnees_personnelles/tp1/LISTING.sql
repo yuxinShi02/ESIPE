@@ -1,0 +1,22 @@
+
+drop table LISTING;
+create table LiSTING (name varchar(50), gender char(1), age NUMBER, insurance varchar(50));
+insert into LiSTING values('dubois', 'H', 55, 'MGEN'); 
+insert into LiSTING values('durand', 'F', 25, 'MGEN'); 
+insert into LiSTING values('mike', 'H', 35, 'MATMUT'); 
+insert into LiSTING values('john', 'F', 45, 'MATMUT'); 
+insert into LiSTING values('max', 'H', 65, 'MAIF'); 
+insert into LiSTING values('mat', 'F', 55, 'MGEN'); 
+insert into LiSTING values('fred', 'H', 55, 'MATMUT'); 
+insert into LiSTING values('berny', 'H', 55, 'MATMUT'); 
+insert into LiSTING values('franck', 'F', 64, 'MGEN'); 
+insert into LiSTING values('toufik', 'H', 57, 'MAIF'); 
+insert into LiSTING values('marc', 'H', 53, 'MATMUT'); 
+insert into LiSTING values('jack', 'H', 43, 'MATMUT'); 
+insert into LiSTING values('franz', 'F', 63, 'MGEN'); 
+insert into LiSTING values('beef', 'H', 56, 'MAIF'); 
+insert into LiSTING values('jacky', 'H', 59, 'MAIF'); 
+insert into LiSTING values('farouk', 'H', 59, 'MATMUT'); 
+insert into LiSTING values('ling', 'H', 49, 'MATMUT'); 
+insert into LiSTING values('peter', 'F', 69, 'MGEN'); 
+insert into LiSTING values('marten', 'H', 59, 'MAIF'); 

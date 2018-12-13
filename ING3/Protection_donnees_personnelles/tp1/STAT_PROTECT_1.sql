@@ -1,21 +1,22 @@
 
 drop view STATS_VIEW ;
 drop table STATS;
+create table STATS_ANONYM()
 create table STATS (name varchar(50), gender char(1), age NUMBER, insurance varchar(50), leucocyte NUMBER);
-insert into STATS values('dubois', 'H', 55, 'MGEN', 3500); 
-insert into STATS values('durand', 'F', 25, 'MGEN', 3000); 
-insert into STATS values('mike', 'H', 35, 'MATMUT', 7000); 
-insert into STATS values('john', 'F', 45, 'MATMUT', 5500); 
-insert into STATS values('max', 'H', 65, 'MAIF', 2800); 
-insert into STATS values('mat', 'F', 55, 'MGEN', 3200); 
-insert into STATS values('fred', 'H', 55, 'MATMUT', 5000); 
-insert into STATS values('berny', 'H', 55, 'MATMUT', 2500); 
-insert into STATS values('franck', 'F', 64, 'MGEN', 3000); 
-insert into STATS values('toufik', 'H', 57, 'MAIF', 4500); 
+insert into STATS values('dubois', 'H', 55, 'MGEN', 3500);
+insert into STATS values('durand', 'F', 25, 'MGEN', 3000);
+insert into STATS values('mike', 'H', 35, 'MATMUT', 7000);
+insert into STATS values('john', 'F', 45, 'MATMUT', 5500);
+insert into STATS values('max', 'H', 65, 'MAIF', 2800);
+insert into STATS values('mat', 'F', 55, 'MGEN', 3200);
+insert into STATS values('fred', 'H', 55, 'MATMUT', 5000);
+insert into STATS values('berny', 'H', 55, 'MATMUT', 2500);
+insert into STATS values('franck', 'F', 64, 'MGEN', 3000);
+insert into STATS values('toufik', 'H', 57, 'MAIF', 4500);
 
 create view STATS_VIEW AS SELECT gender, insurance, leucocyte from STATS;
 
-create or replace function ROW_COUNT ( where_clause IN varchar ) 
+create or replace function ROW_COUNT ( where_clause IN varchar )
 RETURN NUMBER
 IS
   res NUMBER;
@@ -27,7 +28,7 @@ begin
 end;
 /
 
-create or replace function SUM_LEUCOCYTE ( where_clause IN varchar ) 
+create or replace function SUM_LEUCOCYTE ( where_clause IN varchar )
 RETURN NUMBER
 IS
   res NUMBER;
@@ -39,7 +40,7 @@ begin
 end;
 /
 
-CREATE or replace FUNCTION WHERE_CLAUSE ( where_clause IN varchar ) 
+CREATE or replace FUNCTION WHERE_CLAUSE ( where_clause IN varchar )
 RETURN VARCHAR
 IS
 begin

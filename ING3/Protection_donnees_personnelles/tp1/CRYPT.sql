@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE FUNCTION pading (p_text  IN VARCHAR2) 
+CREATE OR REPLACE FUNCTION pading (p_text  IN VARCHAR2)
 RETURN VARCHAR2
 IS
     l_units  NUMBER;
@@ -16,33 +16,33 @@ IS
 
 select pading('test') from dual;
 
-CREATE OR REPLACE FUNCTION encrypt (text  IN VARCHAR2, key IN VARCHAR2) 
+CREATE OR REPLACE FUNCTION encrypt (text  IN VARCHAR2, key IN VARCHAR2)
 RETURN VARCHAR2
 IS
     pad VARCHAR2(1000);
     res VARCHAR2(1000);
   BEGIN
-  ???? := pading(????);
-  ???? := DBMS_OBFUSCATION_TOOLKIT.desencrypt(
-          input => UTL_RAW.cast_to_raw(????), 
-          key  => UTL_RAW.cast_to_raw(????) );
-  RETURN ????;
+  pad := pading(text);
+  res := DBMS_OBFUSCATION_TOOLKIT.desencrypt(
+          input => UTL_RAW.cast_to_raw(pad),
+          key  => UTL_RAW.cast_to_raw(key) );
+  RETURN res;
   END;
 /
 
 select encrypt('test', '12345678') from dual;
 
-CREATE OR REPLACE FUNCTION decrypt (text  IN VARCHAR2, key IN VARCHAR2) 
+CREATE OR REPLACE FUNCTION decrypt (text  IN VARCHAR2, key IN VARCHAR2)
 RETURN VARCHAR2
 IS
   dec VARCHAR2(1000);
   res VARCHAR2(1000);
 BEGIN
-  ???? := UTL_RAW.CAST_TO_VARCHAR2(
+  dec := UTL_RAW.CAST_TO_VARCHAR2(
           DBMS_OBFUSCATION_TOOLKIT.desdecrypt(
-           input => ?????,
-           key   => UTL_RAW.cast_to_raw(????) ) );
-  ???? := RTrim(????, '-');
+           input => text,
+           key   => UTL_RAW.cast_to_raw(key) ) );
+  res := RTrim(dec, '-');
   RETURN res;
 END;
 /
